@@ -15,13 +15,13 @@ int main(int argc, char **argv) {
         puts("Error opening file");
         exit(EXIT_FAILURE);
     }
-    int number_of_students = 0;
     Student_t *database;
     database = (Student_t *) malloc(DB_CAPACITY * (sizeof(Student_t)));
-    add_students_from_file(database, &number_of_students, p_file);
     int running = true;
     char input;
     int choice;
+    int number_of_students = 0;
+    add_students_from_file(database, &number_of_students, p_file);
     while (running) {
         printf("Total number of students: %d\n", number_of_students);
         printf("1. Add student\n2. Delete student\n3. Student info\n4. Print average grades\n"
