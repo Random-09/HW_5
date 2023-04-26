@@ -52,10 +52,10 @@ void str_input(char *input, int data_size) {
     } while (strlen(input) > data_size);
 }
 
-void password_input(char *hash) {
+void password_input(uint8_t hash[HASH_SIZE]) {
     char password[PASSWORD_SIZE];
     str_input(password, PASSWORD_SIZE);
-    printf("%s", password);
+    calc_sha_256(hash, password, PASSWORD_SIZE);
 }
 
 int int_check(char data[MAX_INT]) {
@@ -85,11 +85,11 @@ void add_student_from_terminal(Student_t *p_database, int *number_of_students) {
     char *name;
     char *student_card_number;
     char *login;
-    char *hash;
-    name = (char *) malloc(10 * sizeof(char));
-    student_card_number = (char *) malloc(10 * sizeof(char));
-    login = (char *) malloc(10 * sizeof(char));
-    hash = (char *) malloc(10 * sizeof(char));
+    uint8_t *hash;
+    name = (char *) malloc(NAME_SIZE * sizeof(char));
+    student_card_number = (char *) malloc(STUDENT_CARD_SIZE * sizeof(char));
+    login = (char *) malloc(LOGIN_SIZE * sizeof(char));
+    hash = malloc(HASH_SIZE * sizeof(uint8_t));
     puts("Enter name of the student.");
     str_input(name, NAME_SIZE);
     puts("Enter student's card number.");
