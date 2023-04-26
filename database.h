@@ -13,11 +13,13 @@
 #define MAX_INT 9
 #define MAX_FLOAT 7
 
-typedef struct {
+typedef struct { // id:name:student_card_num:gpa:login:hash
     int id;
     char *name;
     char *student_card_number;
     float average_grade;
+    char *login;
+    char *hash;
 } Student_t;
 
 enum choice {
@@ -42,7 +44,9 @@ int int_check(char data[sizeof(int)]);
 
 int float_check(char data[sizeof(float)]);
 
-void add_student(Student_t *p_database, int *number_of_students);
+void add_student_from_terminal(Student_t *p_database, int *number_of_students);
+
+void add_student(Student_t *p_database, int *number_of_students, Student_t student);
 
 void delete_student(Student_t *p_database, int *number_of_students);
 

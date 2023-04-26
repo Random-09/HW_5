@@ -70,23 +70,28 @@ int float_check(char data[MAX_FLOAT]) {
     return 1;
 }
 
-void add_student(Student_t *p_database, int *number_of_students) {
+void add_student_from_terminal(Student_t *p_database, int *number_of_students) {
     int id = id_input();
-    if (id_uniqueness_check(id, p_database, *number_of_students)) {
-        char *name;
-        char *student_card_number;
-        name = (char *) malloc(10 * sizeof(char));
-        student_card_number = (char *) malloc(10 * sizeof(char));
-        puts("Enter name of the student.");
-        str_input(name, NAME_SIZE);
-        puts("Enter student's card number.");
-        str_input(student_card_number, STUDENT_CARD_SIZE);
-        float average_grade = grade_input();
-        Student_t student = {id, name, student_card_number, average_grade};
-        p_database[*number_of_students] = student;
-        (*number_of_students)++;
-    } else
+    if (!id_uniqueness_check(id, p_database, *number_of_students)) {
         puts("ID is not unique!\n");
+        exit(EXIT_FAILURE);
+    }
+    char *name;
+    char *student_card_number;
+    name = (char *) malloc(10 * sizeof(char));
+    student_card_number = (char *) malloc(10 * sizeof(char));
+    puts("Enter name of the student.");
+    str_input(name, NAME_SIZE);
+    puts("Enter student's card number.");
+    str_input(student_card_number, STUDENT_CARD_SIZE);
+    float average_grade = grade_input();
+    Student_t student = {id, name, student_card_number, average_grade};
+    add_student(p_database, number_of_students, student);
+}
+
+void add_student(Student_t *p_database, int *number_of_students, Student_t student) {
+    p_database[*number_of_students] = student;
+    (*number_of_students)++;
 }
 
 void delete_student(Student_t *p_database, int *number_of_students) {
