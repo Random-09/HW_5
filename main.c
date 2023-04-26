@@ -56,3 +56,9 @@ int main(int argc, char **argv) {
     fclose(p_file);
     free(database);
 }
+
+// TODO
+
+// unhash using sprintf
+
+// allocate memory for each data type in Student_t (int and float)

@@ -17,9 +17,8 @@ int id_index(int id, Student_t *p_database) {
 }
 
 int login_index(const char *login, Student_t *p_database) {
-    printf("Login: %s\n", login);
     for (int i = 0; i < 50; i++) {
-        if (strcmp(login, p_database[i].login) != 0)
+        if (!strcmp(login, p_database[i].login))
             return i;
     }
     return -1;
@@ -164,7 +163,7 @@ void authentication(Student_t *p_database) {
     puts("Enter student's login.");
     str_input(login, LOGIN_SIZE);
     int index = login_index(login, p_database);
-    printf("%d\n", index);
+    printf("Index: %d\n", index);
     puts("Enter student's password.");
     password_input(hash);
     printf("%s\n", hash);
