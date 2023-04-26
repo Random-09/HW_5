@@ -9,6 +9,8 @@
 #define DB_CAPACITY 50
 #define NAME_SIZE 15
 #define STUDENT_CARD_SIZE 7
+#define LOGIN_SIZE 10
+#define PASSWORD_SIZE 15
 #define BUFFER 30
 #define MAX_INT 9
 #define MAX_FLOAT 7
@@ -27,6 +29,7 @@ enum choice {
     DELETE_STUDENT,
     STUDENT_INFO,
     PRINT_AVERAGE_GRADES,
+    AUTHENTICATION,
     EXIT
 };
 

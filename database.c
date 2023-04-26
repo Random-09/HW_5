@@ -52,6 +52,12 @@ void str_input(char *input, int data_size) {
     } while (strlen(input) > data_size);
 }
 
+void password_input(char *hash) {
+    char password[PASSWORD_SIZE];
+    str_input(password, PASSWORD_SIZE);
+    printf("%s", password);
+}
+
 int int_check(char data[MAX_INT]) {
     for (int i = 0; i < strlen(data); i++) {
         if (!isdigit(data[i]))
@@ -78,14 +84,22 @@ void add_student_from_terminal(Student_t *p_database, int *number_of_students) {
     }
     char *name;
     char *student_card_number;
+    char *login;
+    char *hash;
     name = (char *) malloc(10 * sizeof(char));
     student_card_number = (char *) malloc(10 * sizeof(char));
+    login = (char *) malloc(10 * sizeof(char));
+    hash = (char *) malloc(10 * sizeof(char));
     puts("Enter name of the student.");
     str_input(name, NAME_SIZE);
     puts("Enter student's card number.");
     str_input(student_card_number, STUDENT_CARD_SIZE);
     float average_grade = grade_input();
-    Student_t student = {id, name, student_card_number, average_grade};
+    puts("Enter student login.");
+    str_input(login, LOGIN_SIZE);
+    puts("Enter password of the student.");
+    password_input(hash);
+    Student_t student = {id, name, student_card_number, average_grade, login, hash};
     add_student(p_database, number_of_students, student);
 }
 
@@ -118,7 +132,7 @@ void student_info(Student_t *p_database) {
         char *name = p_database[index].name;
         char *student_card_number = p_database[index].student_card_number;
         float average_grade = p_database[index].average_grade;
-        printf("Student with id: %d\nName: %s\nStudent card number: %s\nAverage grade: %.1f\n\n",
+        printf("Student with id: %d\nName: %s\nStudent card number: %s\nAverage grade: %.2f\n\n",
                id, name, student_card_number, average_grade);
     } else {
         puts("ID not found in this database!\n");
@@ -129,7 +143,7 @@ void print_average_grades(Student_t *p_database, int number_of_students) {
     for (int i = 0; i < number_of_students; i++) {
         char *name = p_database[i].name;
         float average_grade = p_database[i].average_grade;
-        printf("%s: %.1f\n", name, average_grade);
+        printf("%s: %.2f\n", name, average_grade);
     }
     puts("");
 }
