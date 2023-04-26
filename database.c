@@ -16,6 +16,15 @@ int id_index(int id, Student_t *p_database) {
     return -1;
 }
 
+int login_index(const char *login, Student_t *p_database) {
+    printf("Login: %s\n", login);
+    for (int i = 0; i < 50; i++) {
+        if (strcmp(login, p_database[i].login) != 0)
+            return i;
+    }
+    return -1;
+}
+
 int id_input() {
     char id_str[BUFFER];
     int i = 0;
@@ -82,10 +91,11 @@ void add_student_from_terminal(Student_t *p_database, int *number_of_students) {
         puts("ID is not unique!\n");
         exit(EXIT_FAILURE);
     }
-    char *name;
+    char *name;                                                     // <---- Try to allocate memory for whole data
     char *student_card_number;
     char *login;
     uint8_t *hash;
+
     name = (char *) malloc(NAME_SIZE * sizeof(char));
     student_card_number = (char *) malloc(STUDENT_CARD_SIZE * sizeof(char));
     login = (char *) malloc(LOGIN_SIZE * sizeof(char));
@@ -95,9 +105,9 @@ void add_student_from_terminal(Student_t *p_database, int *number_of_students) {
     puts("Enter student's card number.");
     str_input(student_card_number, STUDENT_CARD_SIZE);
     float average_grade = grade_input();
-    puts("Enter student login.");
+    puts("Enter student's login.");
     str_input(login, LOGIN_SIZE);
-    puts("Enter password of the student.");
+    puts("Enter student's password.");
     password_input(hash);
     Student_t student = {id, name, student_card_number, average_grade, login, hash};
     add_student(p_database, number_of_students, student);
@@ -146,4 +156,22 @@ void print_average_grades(Student_t *p_database, int number_of_students) {
         printf("%s: %.2f\n", name, average_grade);
     }
     puts("");
+}
+
+void authentication(Student_t *p_database) {
+    char login[LOGIN_SIZE];
+    uint8_t hash[HASH_SIZE];
+    puts("Enter student's login.");
+    str_input(login, LOGIN_SIZE);
+    int index = login_index(login, p_database);
+    printf("%d\n", index);
+    puts("Enter student's password.");
+    password_input(hash);
+    printf("%s\n", hash);
+    printf("%s\n", p_database[index].hash);
+    if (p_database[index].hash != hash) {
+        puts("Wrong password");
+    }
+    else
+        puts("Authentication successful");
 }

@@ -24,7 +24,8 @@ int main(int argc, char **argv) {
     int choice;
     while (running) {
         printf("Total number of students: %d\n", number_of_students);
-        printf("1. Add student\n2. Delete student\n3. Student info\n4. Print average grades\n5. Exit\n");
+        printf("1. Add student\n2. Delete student\n3. Student info\n4. Print average grades\n"
+               "5. Authentication\n6. Exit\n");
         scanf("%s", &input);
         choice = strtol(&input, NULL, 10);
         switch (choice) {
@@ -40,6 +41,9 @@ int main(int argc, char **argv) {
             case PRINT_AVERAGE_GRADES:
                 merge_sort(database, 0, number_of_students - 1);
                 print_average_grades(database, number_of_students);
+                break;
+            case AUTHENTICATION:
+                authentication(database);
                 break;
             case EXIT:
                 running = false;

@@ -39,6 +39,8 @@ int id_uniqueness_check(int id, Student_t *p_database, int number_of_students);
 
 int id_index(int id, Student_t *p_database);
 
+int login_index(const char *login, Student_t *p_database);
+
 int id_input();
 
 void str_input(char *input, int data_size);
@@ -59,5 +61,6 @@ void student_info(Student_t *p_database);
 
 void print_average_grades(Student_t *p_database, int number_of_students);
 
+void authentication(Student_t *p_database);
 
 #endif
