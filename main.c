@@ -59,6 +59,6 @@ int main(int argc, char **argv) {
 
 // TODO
 
-// unhash using sprintf
+// 1) Функция перевода хэша из uin8_t в string
 
-// allocate memory for each data type in Student_t (int and float)
+// 2) allocate memory for each data type in Student_t (int and float)
