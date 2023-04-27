@@ -127,20 +127,27 @@ void add_student(Student_t *p_database, int *number_of_students, Student_t stude
     (*number_of_students)++;
 }
 
-void delete_student(Student_t *p_database, int *number_of_students) {
+void delete_student(Student_t *p_database, int *number_of_students, FILE *p_file) {
     if (*number_of_students == 0)
         puts("Database is empty!");
     else {
         int id = id_input();
         int index = id_index(id, p_database);
         if (index != -1) {
-            free(p_database[index].name);
+            free(p_database[index].name);               // id:name:student_card_num:gpa:login:hash
             free(p_database[index].student_card_number);
+            free(p_database[index].login);
+            free(p_database[index].hash);               // free все виды данных, если в
+                                                                // будущем все они будут в динамической памяти
             for (int i = index; i < DB_CAPACITY - 1; i++)
                 p_database[i] = p_database[i + 1];
             (*number_of_students)--;
-        } else
+            // Перевести курсор на начало файла
+            // Циклом for перебрать БД и добавить в файл все строчки (не нужная на данном этапе
+            // уже удалена) и добавить пустую строку в конце (Чтобы "очистить" строчку от предыдущей последней)
+        } else {
             puts("ID not found in this database!");
+        }
     }
 }
 

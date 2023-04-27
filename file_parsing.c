@@ -1,4 +1,4 @@
-#include "file_functions.h"
+#include "file_parsing.h"
 
 void add_students_from_file_to_db(Student_t *p_database, int *number_of_students, FILE *p_file) {
     char line[MAX_LINE_LEN];

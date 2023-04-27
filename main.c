@@ -3,7 +3,7 @@
 #include <stdbool.h>
 #include "database.h"
 #include "merge_sort.h"
-#include "file_functions.h"
+#include "file_parsing.h"
 
 int main(int argc, char **argv) {
     if (argc != 2) {
@@ -21,7 +21,7 @@ int main(int argc, char **argv) {
     char input;
     int choice;
     int number_of_students = 0;
-    add_students_from_file_to_db(database, &number_of_students, p_file);
+    add_students_from_file_to_db(database, &number_of_students, p_file); // file parser
     while (running) {
         printf("Total number of students: %d\n", number_of_students);
         printf("1. Add student\n2. Delete student\n3. Student info\n4. Print average grades\n"
@@ -33,7 +33,7 @@ int main(int argc, char **argv) {
                 add_student_to_file_and_db(database, &number_of_students, p_file);
                 break;
             case DELETE_STUDENT:
-                delete_student(database, &number_of_students);
+                delete_student(database, &number_of_students, p_file);
                 break;
             case STUDENT_INFO:
                 student_info(database);
@@ -59,8 +59,8 @@ int main(int argc, char **argv) {
 
 // TODO
 
-// 1) Запись данных в файл
+// 1) Удаление данных из файла (сначала в функции delete_student, при необходимости вынести в отдельную)
 
-// 2) Удаление данных из файла
+// 2) allocate memory for each data type in Student_t (int and float)
 
-// 3) allocate memory for each data type in Student_t (int and float)
+// 3) Изменить проверку if else на более читаемую (которая сразу выкидывает ошибку)

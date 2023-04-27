@@ -1,5 +1,5 @@
-#ifndef TASK3_FILE_FUNCTIONS_H
-#define TASK3_FILE_FUNCTIONS_H
+#ifndef TASK3_FILE_PARSING_H
+#define TASK3_FILE_PARSING_H
 
 #include <stdio.h>
 #include <string.h>

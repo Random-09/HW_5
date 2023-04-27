@@ -55,7 +55,7 @@ void add_student_to_file_and_db(Student_t *p_database, int *number_of_students, 
 
 void add_student(Student_t *p_database, int *number_of_students, Student_t student);
 
-void delete_student(Student_t *p_database, int *number_of_students);
+void delete_student(Student_t *p_database, int *number_of_students, FILE *p_file);
 
 void student_info(Student_t *p_database);
 
