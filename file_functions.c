@@ -1,6 +1,6 @@
 #include "file_functions.h"
 
-void add_students_from_file(Student_t *p_database, int *number_of_students, FILE *p_file) {
+void add_students_from_file_to_db(Student_t *p_database, int *number_of_students, FILE *p_file) {
     char line[MAX_LINE_LEN];
     char *id_tok, *name_tok, *student_card_number_tok, *average_grade_tok, *login_tok, *hash_tok;
     while (fgets(line, MAX_LINE_LEN, p_file) != NULL) {

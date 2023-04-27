@@ -8,7 +8,7 @@
 
 #define MAX_LINE_LEN 128
 
-void add_students_from_file(Student_t *p_database, int *number_of_students, FILE *p_file);
+void add_students_from_file_to_db(Student_t *p_database, int *number_of_students, FILE *p_file);
 
 
 #endif

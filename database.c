@@ -84,7 +84,7 @@ int float_check(char data[MAX_FLOAT]) {
     return 1;
 }
 
-void add_student_from_terminal(Student_t *p_database, int *number_of_students) {
+void add_student_to_file_and_db(Student_t *p_database, int *number_of_students, FILE *p_file) {
     int id = id_input();
     if (!id_uniqueness_check(id, p_database, *number_of_students)) {
         puts("ID is not unique!\n");
@@ -97,9 +97,10 @@ void add_student_from_terminal(Student_t *p_database, int *number_of_students) {
     uint8_t hash[SIZE_OF_SHA_256_HASH];
 
     name = (char *) malloc(NAME_SIZE * sizeof(char));
+    puts("!");
     student_card_number = (char *) malloc(STUDENT_CARD_SIZE * sizeof(char));
     login = (char *) malloc(LOGIN_SIZE * sizeof(char));
-    hash_str = malloc(SIZE_OF_SHA_256_HASH * sizeof(char));
+    hash_str = (char *) malloc(HASH_STR_SIZE * sizeof(char));
 
     puts("Enter name of the student.");
     str_input(name, NAME_SIZE);
@@ -115,6 +116,8 @@ void add_student_from_terminal(Student_t *p_database, int *number_of_students) {
     puts("Enter student's password.");
     password_input(hash);
     uint_to_str(hash, hash_str);
+    fprintf(p_file, "\n%d:%s:%s:%.2f:%s:%s", id, name, student_card_number, average_grade, login, hash_str);
+    fflush(p_file);
     Student_t student = {id, name, student_card_number, average_grade, login, hash_str};
     add_student(p_database, number_of_students, student);
 }
@@ -177,10 +180,9 @@ void authentication(Student_t *p_database) {
     uint_to_str(hash, hash_str);
     printf("%s %s\n", p_database[index].hash, hash_str);
     if (!strcmp(p_database[index].hash, hash_str)) {
-        puts("Authentication successful");
+        puts("Authentication successful\n");
     } else
-        puts("Wrong password");
-    puts("");
+        puts("Wrong password\n");
 }
 
 void uint_to_str(uint8_t hash[], char hash_str[]) {

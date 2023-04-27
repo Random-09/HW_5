@@ -10,7 +10,7 @@ int main(int argc, char **argv) {
         puts("Wrong number of arguments");
         exit(EXIT_FAILURE);
     }
-    FILE *p_file = fopen(argv[1], "r");
+    FILE *p_file = fopen(argv[1], "r+");
     if (p_file == NULL) {
         puts("Error opening file");
         exit(EXIT_FAILURE);
@@ -21,7 +21,7 @@ int main(int argc, char **argv) {
     char input;
     int choice;
     int number_of_students = 0;
-    add_students_from_file(database, &number_of_students, p_file);
+    add_students_from_file_to_db(database, &number_of_students, p_file);
     while (running) {
         printf("Total number of students: %d\n", number_of_students);
         printf("1. Add student\n2. Delete student\n3. Student info\n4. Print average grades\n"
@@ -30,7 +30,7 @@ int main(int argc, char **argv) {
         choice = strtol(&input, NULL, 10);
         switch (choice) {
             case ADD_STUDENT:
-                add_student_from_terminal(database, &number_of_students);
+                add_student_to_file_and_db(database, &number_of_students, p_file);
                 break;
             case DELETE_STUDENT:
                 delete_student(database, &number_of_students);
@@ -59,6 +59,8 @@ int main(int argc, char **argv) {
 
 // TODO
 
-// 1) Функция перевода хэша из uin8_t в string
+// 1) Запись данных в файл
 
-// 2) allocate memory for each data type in Student_t (int and float)
+// 2) Удаление данных из файла
+
+// 3) allocate memory for each data type in Student_t (int and float)

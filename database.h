@@ -51,7 +51,7 @@ int int_check(char data[sizeof(int)]);
 
 int float_check(char data[sizeof(float)]);
 
-void add_student_from_terminal(Student_t *p_database, int *number_of_students);
+void add_student_to_file_and_db(Student_t *p_database, int *number_of_students, FILE *p_file);
 
 void add_student(Student_t *p_database, int *number_of_students, Student_t student);
 
