@@ -88,7 +88,7 @@ void add_student_to_file_and_db(Student_t *p_database, int *number_of_students, 
     int id = id_input();
     if (!id_uniqueness_check(id, p_database, *number_of_students)) {
         puts("ID is not unique!\n");
-        exit(EXIT_FAILURE);
+        return;
     }
     char *name;                                                     // <---- Try to allocate memory for whole data
     char *student_card_number;
@@ -142,9 +142,16 @@ void delete_student(Student_t *p_database, int *number_of_students, FILE *p_file
             for (int i = index; i < DB_CAPACITY - 1; i++)
                 p_database[i] = p_database[i + 1];
             (*number_of_students)--;
-            // Перевести курсор на начало файла
-            // Циклом for перебрать БД и добавить в файл все строчки (не нужная на данном этапе
-            // уже удалена) и добавить пустую строку в конце (Чтобы "очистить" строчку от предыдущей последней)
+            fseek(p_file, 0, SEEK_SET);
+            for (int i = 0; i < *number_of_students; i++) {
+                Student_t stud = p_database[i];
+                printf("%d:%s:%s:%.2f:%s:%s\n", stud.id, stud.name, stud.student_card_number,
+                       stud.average_grade, stud.login, stud.hash);
+                fprintf(p_file, "%d:%s:%s:%.2f:%s:%s", stud.id, stud.name, stud.student_card_number,
+                        stud.average_grade, stud.login, stud.hash);
+            }
+            // Попробовать использовать закрытие и снова открытие файла, чтобы очистить его
+            fflush(p_file);
         } else {
             puts("ID not found in this database!");
         }
