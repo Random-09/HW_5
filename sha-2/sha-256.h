@@ -11,7 +11,7 @@ extern "C" {
 /*
  * @brief Size of the SHA-256 sum. This times eight is 256 bits.
  */
-#define SIZE_OF_SHA_256_HASH 64
+#define SIZE_OF_SHA_256_HASH 32
 
 /*
  * @brief Size of the chunks used for the calculations.

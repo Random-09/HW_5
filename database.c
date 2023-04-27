@@ -60,10 +60,10 @@ void str_input(char *input, int data_size) {
     } while (strlen(input) > data_size);
 }
 
-void password_input(uint8_t hash[HASH_SIZE]) {
+void password_input(uint8_t hash[SIZE_OF_SHA_256_HASH]) {
     char password[PASSWORD_SIZE];
     str_input(password, PASSWORD_SIZE);
-    calc_sha_256(hash, password, PASSWORD_SIZE);
+    calc_sha_256(hash, password, strlen(password));
 }
 
 int int_check(char data[MAX_INT]) {
@@ -93,22 +93,29 @@ void add_student_from_terminal(Student_t *p_database, int *number_of_students) {
     char *name;                                                     // <---- Try to allocate memory for whole data
     char *student_card_number;
     char *login;
-    uint8_t *hash;
+    char *hash_str;
+    uint8_t hash[SIZE_OF_SHA_256_HASH];
 
     name = (char *) malloc(NAME_SIZE * sizeof(char));
     student_card_number = (char *) malloc(STUDENT_CARD_SIZE * sizeof(char));
     login = (char *) malloc(LOGIN_SIZE * sizeof(char));
-    hash = malloc(HASH_SIZE * sizeof(uint8_t));
+    hash_str = malloc(SIZE_OF_SHA_256_HASH * sizeof(char));
+
     puts("Enter name of the student.");
     str_input(name, NAME_SIZE);
+
     puts("Enter student's card number.");
     str_input(student_card_number, STUDENT_CARD_SIZE);
+
     float average_grade = grade_input();
+
     puts("Enter student's login.");
     str_input(login, LOGIN_SIZE);
+
     puts("Enter student's password.");
     password_input(hash);
-    Student_t student = {id, name, student_card_number, average_grade, login, hash};
+    uint_to_str(hash, hash_str);
+    Student_t student = {id, name, student_card_number, average_grade, login, hash_str};
     add_student(p_database, number_of_students, student);
 }
 
@@ -159,18 +166,25 @@ void print_average_grades(Student_t *p_database, int number_of_students) {
 
 void authentication(Student_t *p_database) {
     char login[LOGIN_SIZE];
-    uint8_t hash[HASH_SIZE];
+    uint8_t hash[SIZE_OF_SHA_256_HASH];
+    char hash_str[HASH_STR_SIZE];
     puts("Enter student's login.");
     str_input(login, LOGIN_SIZE);
     int index = login_index(login, p_database);
     printf("Index: %d\n", index);
     puts("Enter student's password.");
     password_input(hash);
-    printf("%s\n", hash);
-    printf("%s\n", p_database[index].hash);
-    if (p_database[index].hash != hash) {
-        puts("Wrong password");
-    }
-    else
+    uint_to_str(hash, hash_str);
+    printf("%s %s\n", p_database[index].hash, hash_str);
+    if (!strcmp(p_database[index].hash, hash_str)) {
         puts("Authentication successful");
+    } else
+        puts("Wrong password");
+    puts("");
+}
+
+void uint_to_str(uint8_t hash[], char hash_str[]) {
+    for (int i = 0; i < 32; i++) {
+        hash_str += sprintf(hash_str, "%02x", hash[i]);
+    }
 }
