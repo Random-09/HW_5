@@ -34,5 +34,3 @@ void add_students_from_file_to_db(Student_t *p_database, int *number_of_students
         add_student(p_database, number_of_students, student);
     }
 }
-
-// id:name:student_card_num:gpa:login:hash

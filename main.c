@@ -23,7 +23,7 @@ int main(int argc, char **argv) {
     char input;
     int choice;
     int number_of_students = 0;
-    add_students_from_file_to_db(database, &number_of_students, p_file); //         <---- file parser
+    add_students_from_file_to_db(database, &number_of_students, p_file);
     fclose(p_file);
     while (running) {
         printf("Total number of students: %d\n", number_of_students);
@@ -58,10 +58,3 @@ int main(int argc, char **argv) {
     }
     free(database);
 }
-
-// TODO
-
-// allocate memory for each data type in Student_t (int and float)
-// and free it too!
-
-// Протестировать добавление/удаление, когда в файле 0 студентов

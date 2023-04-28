@@ -99,7 +99,7 @@ void add_student_to_file_and_db(Student_t *p_database, int *number_of_students, 
         return;
     }
     int *id;
-    char *name;                                                     // id:name:student_card_num:gpa:login:hash
+    char *name;
     char *student_card_number;
     float *average_grade;
     char *login;
@@ -133,9 +133,11 @@ void add_student_to_file_and_db(Student_t *p_database, int *number_of_students, 
     strcpy(login, login_input);
     puts("Enter student's password.");
     password_input(hash);
-    uint_to_str(hash, hash_str);        // если число студентов = 0, то печатать первую строку в файл не с новой строки
+    uint_to_str(hash, hash_str);
     FILE *p_file = fopen(file_path, "a");
-    fprintf(p_file, "\n%d:%s:%s:%.2f:%s:%s", *id, name, student_card_number, *average_grade, login, hash_str);
+    if (*number_of_students != 0)
+        fputs("\n", p_file);
+    fprintf(p_file, "%d:%s:%s:%.2f:%s:%s", *id, name, student_card_number, *average_grade, login, hash_str);
     fclose(p_file);
     Student_t student = {id, name, student_card_number, average_grade, login, hash_str};
     add_student(p_database, number_of_students, student);
@@ -158,7 +160,7 @@ void delete_student(Student_t *p_database, int *number_of_students, char *file_p
         return;
     }
     free(p_database[index].id);
-    free(p_database[index].name);               // id:name:student_card_num:gpa:login:hash
+    free(p_database[index].name);
     free(p_database[index].student_card_number);
     free(p_database[index].average_grade);
     free(p_database[index].login);

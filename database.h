@@ -17,7 +17,7 @@
 #define MAX_INT 9
 #define MAX_FLOAT 7
 
-typedef struct { // id:name:student_card_num:gpa:login:hash
+typedef struct {
     int *id;
     char *name;
     char *student_card_number;

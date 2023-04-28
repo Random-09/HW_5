@@ -15,8 +15,8 @@ void merge(Student_t *array, int left, int middle, int right) {
     k = left;
     while (i < left_len && j < right_len) {
         if (left_array[i].average_grade <= right_array[j].average_grade) {
-            array[k] = left_array[i];                              /*void compare_name*/
-            i++;                                                   /*void compare_login etc.*/
+            array[k] = left_array[i];
+            i++;
         } else {
             array[k] = right_array[j];
             j++;
@@ -35,7 +35,7 @@ void merge(Student_t *array, int left, int middle, int right) {
     }
 }
 
-void merge_sort(Student_t *array, int left, int right) {                // <---- Switch case for HW6
+void merge_sort(Student_t *array, int left, int right) {
     if (left < right) {
         int middle = left + (right - left) / 2;
         merge_sort(array, left, middle);
