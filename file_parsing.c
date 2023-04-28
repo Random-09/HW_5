@@ -12,6 +12,10 @@ void add_students_from_file_to_db(Student_t *p_database, int *number_of_students
         average_grade_tok = strtok(NULL, ":");
         login_tok = strtok(NULL, ":");
         hash_tok = strtok(NULL, ":");
+        if (hash_tok[-2] == '\n') {
+            hash_tok[strlen(hash_tok) - 1] = '\0';
+            puts("!");
+        }
 
         name = (char *) malloc(strlen(name_tok) * sizeof(char));
         student_card_number = (char *) malloc(strlen(student_card_number_tok) * sizeof(char));

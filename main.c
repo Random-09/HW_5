@@ -10,7 +10,9 @@ int main(int argc, char **argv) {
         puts("Wrong number of arguments");
         exit(EXIT_FAILURE);
     }
-    FILE *p_file = fopen(argv[1], "r+");
+    char file_path[strlen(argv[1])];
+    strcpy(file_path, argv[1]);
+    FILE *p_file = fopen(file_path, "r");
     if (p_file == NULL) {
         puts("Error opening file");
         exit(EXIT_FAILURE);
@@ -21,7 +23,8 @@ int main(int argc, char **argv) {
     char input;
     int choice;
     int number_of_students = 0;
-    add_students_from_file_to_db(database, &number_of_students, p_file); // file parser
+    add_students_from_file_to_db(database, &number_of_students, p_file); //         <---- file parser
+    fclose(p_file);
     while (running) {
         printf("Total number of students: %d\n", number_of_students);
         printf("1. Add student\n2. Delete student\n3. Student info\n4. Print average grades\n"
@@ -30,10 +33,10 @@ int main(int argc, char **argv) {
         choice = strtol(&input, NULL, 10);
         switch (choice) {
             case ADD_STUDENT:
-                add_student_to_file_and_db(database, &number_of_students, p_file);
+                add_student_to_file_and_db(database, &number_of_students, file_path);
                 break;
             case DELETE_STUDENT:
-                delete_student(database, &number_of_students, p_file);
+                delete_student(database, &number_of_students, file_path);
                 break;
             case STUDENT_INFO:
                 student_info(database);
@@ -53,14 +56,15 @@ int main(int argc, char **argv) {
                 break;
         }
     }
-    fclose(p_file);
     free(database);
 }
 
 // TODO
 
-// 1) Удаление данных из файла (сначала в функции delete_student, при необходимости вынести в отдельную)
+// Trailing new line
+
+// Проверка на уникальный логин
+
+// 1) Протестировать удаление из файла, разобраться с открытием закрытием файла
 
 // 2) allocate memory for each data type in Student_t (int and float)
-
-// 3) Изменить проверку if else на более читаемую (которая сразу выкидывает ошибку)

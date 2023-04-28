@@ -84,7 +84,7 @@ int float_check(char data[MAX_FLOAT]) {
     return 1;
 }
 
-void add_student_to_file_and_db(Student_t *p_database, int *number_of_students, FILE *p_file) {
+void add_student_to_file_and_db(Student_t *p_database, int *number_of_students, char *file_path) {
     int id = id_input();
     if (!id_uniqueness_check(id, p_database, *number_of_students)) {
         puts("ID is not unique!\n");
@@ -97,7 +97,6 @@ void add_student_to_file_and_db(Student_t *p_database, int *number_of_students, 
     uint8_t hash[SIZE_OF_SHA_256_HASH];
 
     name = (char *) malloc(NAME_SIZE * sizeof(char));
-    puts("!");
     student_card_number = (char *) malloc(STUDENT_CARD_SIZE * sizeof(char));
     login = (char *) malloc(LOGIN_SIZE * sizeof(char));
     hash_str = (char *) malloc(HASH_STR_SIZE * sizeof(char));
@@ -115,9 +114,10 @@ void add_student_to_file_and_db(Student_t *p_database, int *number_of_students, 
 
     puts("Enter student's password.");
     password_input(hash);
-    uint_to_str(hash, hash_str);
+    uint_to_str(hash, hash_str);        // если число студентов = 0, то печатать первую строку в файл не с новой строки
+    FILE *p_file = fopen(file_path, "a");
     fprintf(p_file, "\n%d:%s:%s:%.2f:%s:%s", id, name, student_card_number, average_grade, login, hash_str);
-    fflush(p_file);
+    fclose(p_file);
     Student_t student = {id, name, student_card_number, average_grade, login, hash_str};
     add_student(p_database, number_of_students, student);
 }
@@ -127,48 +127,49 @@ void add_student(Student_t *p_database, int *number_of_students, Student_t stude
     (*number_of_students)++;
 }
 
-void delete_student(Student_t *p_database, int *number_of_students, FILE *p_file) {
-    if (*number_of_students == 0)
+void delete_student(Student_t *p_database, int *number_of_students, char *file_path) {
+    if (*number_of_students == 0) {
         puts("Database is empty!");
-    else {
-        int id = id_input();
-        int index = id_index(id, p_database);
-        if (index != -1) {
-            free(p_database[index].name);               // id:name:student_card_num:gpa:login:hash
-            free(p_database[index].student_card_number);
-            free(p_database[index].login);
-            free(p_database[index].hash);               // free все виды данных, если в
-                                                                // будущем все они будут в динамической памяти
-            for (int i = index; i < DB_CAPACITY - 1; i++)
-                p_database[i] = p_database[i + 1];
-            (*number_of_students)--;
-            fclose(p_file);
-            p_file = fopen("../database.txt", "w");
-            for (int i = 0; i < *number_of_students; i++) {
-                Student_t stud = p_database[i];
-                fprintf(p_file, "%d:%s:%s:%.2f:%s:%s", stud.id, stud.name, stud.student_card_number,
-                        stud.average_grade, stud.login, stud.hash);
-            }
-            // Попробовать использовать закрытие и снова открытие файла, чтобы очистить его
-            fflush(p_file);
-        } else {
-            puts("ID not found in this database!");
-        }
+        return;
     }
+    int id = id_input();
+    int index = id_index(id, p_database);
+    if (index == -1) {
+        puts("ID not found in this database!");
+        return;
+    }
+    free(p_database[index].name);               // id:name:student_card_num:gpa:login:hash
+    free(p_database[index].student_card_number);
+    free(p_database[index].login);
+    free(p_database[index].hash);               // free все виды данных, если в
+                                                        // будущем все они будут в динамической памяти
+    for (int i = index; i < DB_CAPACITY - 1; i++)
+        p_database[i] = p_database[i + 1];
+    (*number_of_students)--;
+    FILE *p_file = fopen(file_path, "w");
+    for (int i = 0; i < *number_of_students; i++) {
+        printf("%d:%s:%s:%.2f:%s:%s\n", p_database[i].id, p_database[i].name,
+               p_database[i].student_card_number, p_database[i].average_grade, p_database[i].login,
+               p_database[i].hash);
+        fprintf(p_file, "%d:%s:%s:%.2f:%s:%s", p_database[i].id, p_database[i].name,
+                p_database[i].student_card_number, p_database[i].average_grade, p_database[i].login,
+                p_database[i].hash);
+    }
+    fclose(p_file);
 }
 
 void student_info(Student_t *p_database) {
     int id = id_input();
     int index = id_index(id, p_database);
-    if (index != -1) {
-        char *name = p_database[index].name;
-        char *student_card_number = p_database[index].student_card_number;
-        float average_grade = p_database[index].average_grade;
-        printf("Student with id: %d\nName: %s\nStudent card number: %s\nAverage grade: %.2f\n\n",
-               id, name, student_card_number, average_grade);
-    } else {
+    if (index == -1) {
         puts("ID not found in this database!\n");
+        return;
     }
+    char *name = p_database[index].name;
+    char *student_card_number = p_database[index].student_card_number;
+    float average_grade = p_database[index].average_grade;
+    printf("Student with id: %d\nName: %s\nStudent card number: %s\nAverage grade: %.2f\n\n",
+           id, name, student_card_number, average_grade);
 }
 
 void print_average_grades(Student_t *p_database, int number_of_students) {
