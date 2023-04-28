@@ -142,11 +142,10 @@ void delete_student(Student_t *p_database, int *number_of_students, FILE *p_file
             for (int i = index; i < DB_CAPACITY - 1; i++)
                 p_database[i] = p_database[i + 1];
             (*number_of_students)--;
-            fseek(p_file, 0, SEEK_SET);
+            fclose(p_file);
+            p_file = fopen("../database.txt", "w");
             for (int i = 0; i < *number_of_students; i++) {
                 Student_t stud = p_database[i];
-                printf("%d:%s:%s:%.2f:%s:%s\n", stud.id, stud.name, stud.student_card_number,
-                       stud.average_grade, stud.login, stud.hash);
                 fprintf(p_file, "%d:%s:%s:%.2f:%s:%s", stud.id, stud.name, stud.student_card_number,
                         stud.average_grade, stud.login, stud.hash);
             }
