@@ -8,6 +8,14 @@ int id_uniqueness_check(int id, Student_t *p_database, int number_of_students) {
     return 1;
 }
 
+int login_uniqueness_check(char *login, Student_t *p_database, int number_of_students) {
+    for (int i = 0; i < number_of_students; i++) {
+        if (!strcmp(p_database[i].login, login))
+            return 0;
+    }
+    return 1;
+}
+
 int id_index(int id, Student_t *p_database) {
     for (int i = 0; i < 50; i++) {
         if (p_database[i].id == id)
@@ -92,13 +100,12 @@ void add_student_to_file_and_db(Student_t *p_database, int *number_of_students, 
     }
     char *name;                                                     // <---- Try to allocate memory for whole data
     char *student_card_number;
-    char *login;
+    char login_input[LOGIN_SIZE];
     char *hash_str;
     uint8_t hash[SIZE_OF_SHA_256_HASH];
 
     name = (char *) malloc(NAME_SIZE * sizeof(char));
     student_card_number = (char *) malloc(STUDENT_CARD_SIZE * sizeof(char));
-    login = (char *) malloc(LOGIN_SIZE * sizeof(char));
     hash_str = (char *) malloc(HASH_STR_SIZE * sizeof(char));
 
     puts("Enter name of the student.");
@@ -110,8 +117,14 @@ void add_student_to_file_and_db(Student_t *p_database, int *number_of_students, 
     float average_grade = grade_input();
 
     puts("Enter student's login.");
-    str_input(login, LOGIN_SIZE);
-
+    str_input(login_input, LOGIN_SIZE);
+    if (!login_uniqueness_check(login_input, p_database, *number_of_students)) {
+        puts("Login is not unique!");
+        return;
+    }
+    char *login;
+    login = (char *) malloc(LOGIN_SIZE * sizeof(char));
+    strcpy(login, login_input);
     puts("Enter student's password.");
     password_input(hash);
     uint_to_str(hash, hash_str);        // если число студентов = 0, то печатать первую строку в файл не с новой строки
@@ -148,9 +161,6 @@ void delete_student(Student_t *p_database, int *number_of_students, char *file_p
     (*number_of_students)--;
     FILE *p_file = fopen(file_path, "w");
     for (int i = 0; i < *number_of_students; i++) {
-        printf("%d:%s:%s:%.2f:%s:%s\n", p_database[i].id, p_database[i].name,
-               p_database[i].student_card_number, p_database[i].average_grade, p_database[i].login,
-               p_database[i].hash);
         fprintf(p_file, "%d:%s:%s:%.2f:%s:%s", p_database[i].id, p_database[i].name,
                 p_database[i].student_card_number, p_database[i].average_grade, p_database[i].login,
                 p_database[i].hash);

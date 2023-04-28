@@ -61,10 +61,4 @@ int main(int argc, char **argv) {
 
 // TODO
 
-// Trailing new line
-
-// Проверка на уникальный логин
-
-// 1) Протестировать удаление из файла, разобраться с открытием закрытием файла
-
 // 2) allocate memory for each data type in Student_t (int and float)
