@@ -61,4 +61,7 @@ int main(int argc, char **argv) {
 
 // TODO
 
-// 2) allocate memory for each data type in Student_t (int and float)
+// allocate memory for each data type in Student_t (int and float)
+// and free it too!
+
+// Протестировать добавление/удаление, когда в файле 0 студентов

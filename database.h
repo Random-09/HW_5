@@ -18,10 +18,10 @@
 #define MAX_FLOAT 7
 
 typedef struct { // id:name:student_card_num:gpa:login:hash
-    int id;
+    int *id;
     char *name;
     char *student_card_number;
-    float average_grade;
+    float *average_grade;
     char *login;
     char *hash;
 } Student_t;
