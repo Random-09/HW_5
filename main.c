@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include "database.h"
-#include "merge_sort.h"
-#include "file_parsing.h"
+#include "include/database.h"
+#include "include/merge_sort.h"
+#include "include/file_parsing.h"
 
 int main(int argc, char **argv) {
     if (argc != 2) {

@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
-#include "sha-2/sha-256.h"
+#include "../sha-2/sha-256.h"
 
 #define DB_CAPACITY 50
 #define NAME_SIZE 15
@@ -18,10 +18,10 @@
 #define MAX_FLOAT 7
 
 typedef struct {
-    int *id;
+    int id;
     char *name;
     char *student_card_number;
-    float *average_grade;
+    float average_grade;
     char *login;
     char *hash;
 } Student_t;

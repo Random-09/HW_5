@@ -1,8 +1,8 @@
-#include "database.h"
+#include "../include/database.h"
 
 int id_uniqueness_check(int id, Student_t *p_database, int number_of_students) {
     for (int i = 0; i < number_of_students; i++) {
-        if (*p_database[i].id == id)
+        if (p_database[i].id == id)
             return 0;
     }
     return 1;
@@ -18,7 +18,7 @@ int login_uniqueness_check(char *login, Student_t *p_database, int number_of_stu
 
 int id_index(int id, Student_t *p_database) {
     for (int i = 0; i < 50; i++) {
-        if (*p_database[i].id == id)
+        if (p_database[i].id == id)
             return i;
     }
     return -1;
@@ -93,25 +93,20 @@ int float_check(char data[MAX_FLOAT]) {
 }
 
 void add_student_to_file_and_db(Student_t *p_database, int *number_of_students, char *file_path) {
-    int id_temp = id_input();
-    if (!id_uniqueness_check(id_temp, p_database, *number_of_students)) {
+    int id = id_input();
+    if (!id_uniqueness_check(id, p_database, *number_of_students)) {
         puts("ID is not unique!\n");
         return;
     }
-    int *id;
     char *name;
     char *student_card_number;
-    float *average_grade;
     char *login;
     char login_input[LOGIN_SIZE];
     char *hash_str;
     uint8_t hash[SIZE_OF_SHA_256_HASH];
 
-    id = (int *) malloc(sizeof(int));
-    *id = id_temp;
     name = (char *) malloc(NAME_SIZE * sizeof(char));
     student_card_number = (char *) malloc(STUDENT_CARD_SIZE * sizeof(char));
-    average_grade = (float *) malloc(sizeof(float));
     hash_str = (char *) malloc(HASH_STR_SIZE * sizeof(char));
 
     puts("Enter name of the student.");
@@ -120,8 +115,7 @@ void add_student_to_file_and_db(Student_t *p_database, int *number_of_students, 
     puts("Enter student's card number.");
     str_input(student_card_number, STUDENT_CARD_SIZE);
 
-    float average_grade_temp = grade_input();
-    *average_grade = average_grade_temp;
+    float average_grade = grade_input();
 
     puts("Enter student's login.");
     str_input(login_input, LOGIN_SIZE);
@@ -137,7 +131,7 @@ void add_student_to_file_and_db(Student_t *p_database, int *number_of_students, 
     FILE *p_file = fopen(file_path, "a");
     if (*number_of_students != 0)
         fputs("\n", p_file);
-    fprintf(p_file, "%d:%s:%s:%.2f:%s:%s", *id, name, student_card_number, *average_grade, login, hash_str);
+    fprintf(p_file, "%d:%s:%s:%.2f:%s:%s", id, name, student_card_number, average_grade, login, hash_str);
     fclose(p_file);
     Student_t student = {id, name, student_card_number, average_grade, login, hash_str};
     add_student(p_database, number_of_students, student);
@@ -159,18 +153,16 @@ void delete_student(Student_t *p_database, int *number_of_students, char *file_p
         puts("ID not found in this database!");
         return;
     }
-    free(p_database[index].id);
     free(p_database[index].name);
     free(p_database[index].student_card_number);
-    free(p_database[index].average_grade);
     free(p_database[index].login);
     free(p_database[index].hash);
     (*number_of_students)--;
     FILE *p_file = fopen(file_path, "w");
     for (int i = 0; i < *number_of_students; i++) {
         Student_t student = p_database[i];
-        fprintf(p_file, "%d:%s:%s:%.2f:%s:%s", *student.id, student.name, student.student_card_number,
-                *student.average_grade, student.login, student.hash);
+        fprintf(p_file, "%d:%s:%s:%.2f:%s:%s", student.id, student.name, student.student_card_number,
+                student.average_grade, student.login, student.hash);
     }
     fclose(p_file);
 }
@@ -184,16 +176,16 @@ void student_info(Student_t *p_database) {
     }
     char *name = p_database[index].name;
     char *student_card_number = p_database[index].student_card_number;
-    float *average_grade = p_database[index].average_grade;
+    float average_grade = p_database[index].average_grade;
     printf("Student with id: %d\nName: %s\nStudent card number: %s\nAverage grade: %.2f\n\n",
-           id, name, student_card_number, *average_grade);
+           id, name, student_card_number, average_grade);
 }
 
 void print_average_grades(Student_t *p_database, int number_of_students) {
     for (int i = 0; i < number_of_students; i++) {
         char *name = p_database[i].name;
-        float *average_grade = p_database[i].average_grade;
-        printf("%s: %.2f\n", name, *average_grade);
+        float average_grade = p_database[i].average_grade;
+        printf("%s: %.2f\n", name, average_grade);
     }
     puts("");
 }
