@@ -65,4 +65,6 @@ void authentication(Student_t *p_database);
 
 void uint_to_str(uint8_t hash[], char hash_str[]);
 
+void free_database(Student_t *p_database, int number_of_students);
+
 #endif

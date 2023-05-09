@@ -213,3 +213,13 @@ void uint_to_str(uint8_t hash[], char hash_str[]) {
         hash_str += sprintf(hash_str, "%02x", hash[i]);
     }
 }
+
+void free_database(Student_t *p_database, int number_of_students) {
+    for (int i = 0; i < number_of_students; i++) {
+        free(p_database[i].name);
+        free(p_database[i].login);
+        free(p_database[i].student_card_number);
+        free(p_database[i].hash);
+    }
+    free(p_database);
+}

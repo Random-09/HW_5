@@ -56,5 +56,5 @@ int main(int argc, char **argv) {
                 break;
         }
     }
-    free(database);
+    free_database(database, number_of_students);
 }
